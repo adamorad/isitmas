@@ -2,9 +2,232 @@
 <html lang="he" dir="rtl">
   <head>
     <meta charset="utf-8" />
-    <title>isitmas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>isitmas — מע״מ על קניות מחו״ל</title>
+    <meta name="description" content="כמה הסף הנוכחי לפטור ממע״מ על קניות מחו״ל? $75 או $150?" />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --green: #16a34a;
+        --green-bg: #dcfce7;
+        --green-border: #86efac;
+        --gray: #6b7280;
+        --gray-bg: #f3f4f6;
+        --gray-border: #d1d5db;
+        --text: #111827;
+        --muted: #6b7280;
+        --bg: #f9fafb;
+        --card: #ffffff;
+        --radius: 16px;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1rem;
+      }
+
+      .site-name {
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        color: var(--muted);
+        text-transform: lowercase;
+        margin-bottom: 2.5rem;
+      }
+
+      .question {
+        font-size: 1.1rem;
+        color: var(--muted);
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+
+      .big-answer {
+        font-size: clamp(5rem, 20vw, 9rem);
+        font-weight: 900;
+        line-height: 1;
+        color: var(--green);
+        text-align: center;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.03em;
+      }
+
+      .answer-label {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--green);
+        text-align: center;
+        margin-bottom: 2.5rem;
+      }
+
+      .options {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .option {
+        border-radius: var(--radius);
+        padding: 1.25rem 2rem;
+        text-align: center;
+        min-width: 140px;
+        transition: transform 0.15s;
+      }
+
+      .option.active {
+        background: var(--green-bg);
+        border: 2px solid var(--green-border);
+      }
+
+      .option.inactive {
+        background: var(--gray-bg);
+        border: 2px solid var(--gray-border);
+        opacity: 0.6;
+      }
+
+      .option-amount {
+        font-size: 2rem;
+        font-weight: 800;
+        display: block;
+        letter-spacing: -0.02em;
+      }
+
+      .option.active .option-amount { color: var(--green); }
+      .option.inactive .option-amount { color: var(--gray); }
+
+      .option-status {
+        font-size: 0.78rem;
+        font-weight: 600;
+        margin-top: 0.25rem;
+        display: block;
+      }
+
+      .option.active .option-status { color: var(--green); }
+      .option.inactive .option-status { color: var(--gray); }
+
+      .divider {
+        width: 40px;
+        height: 2px;
+        background: var(--gray-border);
+        margin: 0 auto 2rem;
+      }
+
+      .history-card {
+        background: var(--card);
+        border: 1px solid #e5e7eb;
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        max-width: 420px;
+        width: 100%;
+      }
+
+      .history-title {
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+
+      .timeline {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+      }
+
+      .timeline li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.875rem;
+        gap: 1rem;
+      }
+
+      .tl-date { color: var(--muted); flex-shrink: 0; font-size: 0.8rem; }
+      .tl-event { color: var(--text); }
+      .tl-amount { font-weight: 700; flex-shrink: 0; }
+      .tl-amount.current { color: var(--green); }
+
+      .explainer {
+        max-width: 420px;
+        width: 100%;
+        margin-top: 1.25rem;
+        font-size: 0.8rem;
+        color: var(--muted);
+        text-align: center;
+        line-height: 1.6;
+      }
+
+      .explainer a { color: var(--muted); }
+
+      footer {
+        margin-top: 3rem;
+        font-size: 0.75rem;
+        color: #9ca3af;
+        text-align: center;
+      }
+    </style>
   </head>
   <body>
-    <h1>isitmas</h1>
+    <p class="site-name">isitmas ✦ מע״מ על קניות מחו״ל</p>
+
+    <p class="question">מה הסף הנוכחי לפטור ממע״מ?</p>
+
+    <div class="big-answer">$75</div>
+    <p class="answer-label">הסף הנוכחי — קניות מעל סכום זה חייבות במע״מ</p>
+
+    <div class="options">
+      <div class="option active">
+        <span class="option-amount">$75</span>
+        <span class="option-status">✓ בתוקף עכשיו</span>
+      </div>
+      <div class="option inactive">
+        <span class="option-amount">$150</span>
+        <span class="option-status">בוטל</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="history-card">
+      <p class="history-title">ציר זמן</p>
+      <ul class="timeline">
+        <li>
+          <span class="tl-date">עד ינואר 2026</span>
+          <span class="tl-event">סף קודם</span>
+          <span class="tl-amount">$75</span>
+        </li>
+        <li>
+          <span class="tl-date">ינואר 2026</span>
+          <span class="tl-event">שר האוצר הכפיל לפטור</span>
+          <span class="tl-amount">$150</span>
+        </li>
+        <li>
+          <span class="tl-date">24.2.2026</span>
+          <span class="tl-event">הכנסת ביטלה (59–25)</span>
+          <span class="tl-amount current">$75 ↩</span>
+        </li>
+      </ul>
+    </div>
+
+    <p class="explainer">
+      קניות מחו״ל מתחת ל-$75 (ללא משלוח וביטוח) פטורות ממע״מ, מכס ומס קנייה.
+      מעל הסף — תשלמו על הכל.
+    </p>
+
+    <footer>עודכן לאחרונה: יוני 2026</footer>
   </body>
 </html>
