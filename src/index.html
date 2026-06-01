@@ -4,17 +4,23 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>isitmas — מע״מ על קניות מחו״ל</title>
-    <meta name="description" content="כמה הסף הנוכחי לפטור ממע״מ על קניות מחו״ל? $75 או $150?" />
+    <meta name="description" content="כמה הסף הנוכחי לפטור ממע״מ על קניות מחו״ל? $75, $130 או $150?" />
     <style>
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
       :root {
+        --amber: #d97706;
+        --amber-bg: #fef3c7;
+        --amber-border: #fcd34d;
         --green: #16a34a;
         --green-bg: #dcfce7;
         --green-border: #86efac;
         --gray: #6b7280;
         --gray-bg: #f3f4f6;
         --gray-border: #d1d5db;
+        --red: #dc2626;
+        --red-bg: #fee2e2;
+        --red-border: #fca5a5;
         --text: #111827;
         --muted: #6b7280;
         --bg: #f9fafb;
@@ -31,7 +37,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 2rem 1rem;
+        padding: 2.5rem 1rem;
       }
 
       .site-name {
@@ -54,7 +60,7 @@
         font-size: clamp(5rem, 20vw, 9rem);
         font-weight: 900;
         line-height: 1;
-        color: var(--green);
+        color: var(--amber);
         text-align: center;
         margin-bottom: 0.5rem;
         letter-spacing: -0.03em;
@@ -63,14 +69,30 @@
       .answer-label {
         font-size: 1rem;
         font-weight: 600;
-        color: var(--green);
+        color: var(--amber);
         text-align: center;
+        margin-bottom: 0.5rem;
+      }
+
+      .legal-warning {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: var(--red-bg);
+        border: 1px solid var(--red-border);
+        border-radius: 8px;
+        padding: 0.5rem 0.9rem;
+        font-size: 0.8rem;
+        color: var(--red);
+        font-weight: 600;
         margin-bottom: 2.5rem;
+        text-align: center;
+        max-width: 400px;
       }
 
       .options {
         display: flex;
-        gap: 1rem;
+        gap: 0.75rem;
         margin-bottom: 3rem;
         flex-wrap: wrap;
         justify-content: center;
@@ -78,42 +100,58 @@
 
       .option {
         border-radius: var(--radius);
-        padding: 1.25rem 2rem;
+        padding: 1.1rem 1.5rem;
         text-align: center;
-        min-width: 140px;
+        min-width: 110px;
         transition: transform 0.15s;
+        position: relative;
       }
 
       .option.active {
-        background: var(--green-bg);
-        border: 2px solid var(--green-border);
+        background: var(--amber-bg);
+        border: 2px solid var(--amber-border);
       }
 
-      .option.inactive {
+      .option.old {
         background: var(--gray-bg);
         border: 2px solid var(--gray-border);
-        opacity: 0.6;
+        opacity: 0.55;
+      }
+
+      .option.cancelled {
+        background: var(--red-bg);
+        border: 2px solid var(--red-border);
+        opacity: 0.55;
       }
 
       .option-amount {
-        font-size: 2rem;
+        font-size: 1.9rem;
         font-weight: 800;
         display: block;
         letter-spacing: -0.02em;
       }
 
-      .option.active .option-amount { color: var(--green); }
-      .option.inactive .option-amount { color: var(--gray); }
+      .option.active   .option-amount { color: var(--amber); }
+      .option.old      .option-amount { color: var(--gray); }
+      .option.cancelled .option-amount { color: var(--red); }
 
       .option-status {
-        font-size: 0.78rem;
+        font-size: 0.75rem;
         font-weight: 600;
         margin-top: 0.25rem;
         display: block;
       }
 
-      .option.active .option-status { color: var(--green); }
-      .option.inactive .option-status { color: var(--gray); }
+      .option.active    .option-status { color: var(--amber); }
+      .option.old       .option-status { color: var(--gray); }
+      .option.cancelled .option-status { color: var(--red); }
+
+      .option-date {
+        font-size: 0.68rem;
+        color: var(--muted);
+        margin-top: 0.15rem;
+        display: block;
+      }
 
       .divider {
         width: 40px;
@@ -127,7 +165,7 @@
         border: 1px solid #e5e7eb;
         border-radius: var(--radius);
         padding: 1.5rem;
-        max-width: 420px;
+        max-width: 460px;
         width: 100%;
       }
 
@@ -145,40 +183,84 @@
         list-style: none;
         display: flex;
         flex-direction: column;
-        gap: 0.6rem;
+        gap: 0;
       }
 
-      .timeline li {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+      .tl-item {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 0.5rem 1rem;
         font-size: 0.875rem;
-        gap: 1rem;
+        padding: 0.6rem 0;
+        border-bottom: 1px solid var(--gray-border);
+        align-items: start;
       }
 
-      .tl-date { color: var(--muted); flex-shrink: 0; font-size: 0.8rem; }
-      .tl-event { color: var(--text); }
-      .tl-amount { font-weight: 700; flex-shrink: 0; }
-      .tl-amount.current { color: var(--green); }
+      .tl-item:last-child { border-bottom: none; }
+
+      .tl-date { color: var(--muted); font-size: 0.78rem; margin-bottom: 0.1rem; }
+      .tl-event { color: var(--text); line-height: 1.4; }
+      .tl-amount { font-weight: 800; font-size: 1.1rem; align-self: center; }
+      .tl-amount.old      { color: var(--gray); }
+      .tl-amount.gone     { color: var(--red); text-decoration: line-through; }
+      .tl-amount.current  { color: var(--amber); }
 
       .explainer {
-        max-width: 420px;
+        max-width: 460px;
         width: 100%;
-        margin-top: 1.25rem;
+        margin-top: 1rem;
         font-size: 0.8rem;
         color: var(--muted);
         text-align: center;
-        line-height: 1.6;
+        line-height: 1.65;
       }
 
-      .explainer a { color: var(--muted); }
+      .explainer strong { color: var(--text); }
 
-      footer {
-        margin-top: 3rem;
-        font-size: 0.75rem;
-        color: #9ca3af;
+      .brackets {
+        background: var(--card);
+        border: 1px solid #e5e7eb;
+        border-radius: var(--radius);
+        padding: 1.25rem 1.5rem;
+        max-width: 460px;
+        width: 100%;
+        margin-top: 1rem;
+      }
+
+      .brackets-title {
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+        margin-bottom: 0.9rem;
         text-align: center;
       }
+
+      .bracket-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.85rem;
+        padding: 0.35rem 0;
+        border-bottom: 1px solid var(--gray-border);
+        gap: 1rem;
+      }
+
+      .bracket-row:last-child { border-bottom: none; }
+      .bracket-range { color: var(--text); font-weight: 600; }
+      .bracket-tax { color: var(--muted); }
+      .bracket-tax.free { color: var(--green); font-weight: 600; }
+
+      footer {
+        margin-top: 2.5rem;
+        font-size: 0.72rem;
+        color: #9ca3af;
+        text-align: center;
+        line-height: 1.7;
+      }
+
+      footer a { color: #9ca3af; }
     </style>
   </head>
   <body>
@@ -186,17 +268,28 @@
 
     <p class="question">מה הסף הנוכחי לפטור ממע״מ?</p>
 
-    <div class="big-answer">$75</div>
-    <p class="answer-label">הסף הנוכחי — קניות מעל סכום זה חייבות במע״מ</p>
+    <div class="big-answer">$130</div>
+    <p class="answer-label">הסף הנוכחי לפי צו שר האוצר (מ-25.2.2026)</p>
+
+    <div class="legal-warning">
+      ⚠️ מעמד משפטי שנוי במחלוקת — בג״ץ דן בתוקפו
+    </div>
 
     <div class="options">
-      <div class="option active">
+      <div class="option old">
         <span class="option-amount">$75</span>
-        <span class="option-status">✓ בתוקף עכשיו</span>
+        <span class="option-status">הסף הישן</span>
+        <span class="option-date">עד 23.12.2025</span>
       </div>
-      <div class="option inactive">
+      <div class="option cancelled">
         <span class="option-amount">$150</span>
-        <span class="option-status">בוטל</span>
+        <span class="option-status">בוטל ע״י הכנסת</span>
+        <span class="option-date">24.12.2025–24.2.2026</span>
+      </div>
+      <div class="option active">
+        <span class="option-amount">$130</span>
+        <span class="option-status">בתוקף כעת</span>
+        <span class="option-date">מ-25.2.2026</span>
       </div>
     </div>
 
@@ -205,29 +298,67 @@
     <div class="history-card">
       <p class="history-title">ציר זמן</p>
       <ul class="timeline">
-        <li>
-          <span class="tl-date">עד ינואר 2026</span>
-          <span class="tl-event">סף קודם</span>
-          <span class="tl-amount">$75</span>
+        <li class="tl-item">
+          <div>
+            <div class="tl-date">עד 23 דצמבר 2025</div>
+            <div class="tl-event">סף ותיק שעמד שנים רבות</div>
+          </div>
+          <span class="tl-amount old">$75</span>
         </li>
-        <li>
-          <span class="tl-date">ינואר 2026</span>
-          <span class="tl-event">שר האוצר הכפיל לפטור</span>
-          <span class="tl-amount">$150</span>
+        <li class="tl-item">
+          <div>
+            <div class="tl-date">24 דצמבר 2025</div>
+            <div class="tl-event">שר האוצר סמוטריץ׳ הכפיל את הפטור בצו</div>
+          </div>
+          <span class="tl-amount gone">$150</span>
         </li>
-        <li>
-          <span class="tl-date">24.2.2026</span>
-          <span class="tl-event">הכנסת ביטלה (59–25)</span>
-          <span class="tl-amount current">$75 ↩</span>
+        <li class="tl-item">
+          <div>
+            <div class="tl-date">24 פברואר 2026</div>
+            <div class="tl-event">הכנסת ביטלה את הצו (59 נגד 25) — תקדים: ביטול כנסת לצו שר</div>
+          </div>
+          <span class="tl-amount gone">$150 ✕</span>
+        </li>
+        <li class="tl-item">
+          <div>
+            <div class="tl-date">25 פברואר 2026</div>
+            <div class="tl-event">סמוטריץ׳ חתם על צו חדש ב-$130 כ-16 שעות לאחר הביטול — במתכוון בסכום שונה כדי לעקוף את היועמ״ש</div>
+          </div>
+          <span class="tl-amount current">$130</span>
+        </li>
+        <li class="tl-item">
+          <div>
+            <div class="tl-date">מאי 2026</div>
+            <div class="tl-event">בג״ץ סימן כי הצו עשוי להיות בלתי חוקי כעקיפת החלטת הכנסת</div>
+          </div>
+          <span class="tl-amount current">?</span>
         </li>
       </ul>
     </div>
 
+    <div class="brackets">
+      <p class="brackets-title">מדרגות מס לפי הסף הנוכחי</p>
+      <div class="bracket-row">
+        <span class="bracket-range">עד $130</span>
+        <span class="bracket-tax free">פטור מלא</span>
+      </div>
+      <div class="bracket-row">
+        <span class="bracket-range">$130 – $500</span>
+        <span class="bracket-tax">מע״מ 18% בלבד</span>
+      </div>
+      <div class="bracket-row">
+        <span class="bracket-range">מעל $500</span>
+        <span class="bracket-tax">מע״מ + מכס + מס קנייה</span>
+      </div>
+    </div>
+
     <p class="explainer">
-      קניות מחו״ל מתחת ל-$75 (ללא משלוח וביטוח) פטורות ממע״מ, מכס ומס קנייה.
-      מעל הסף — תשלמו על הכל.
+      הסכום מחושב על ערך הסחורה בלבד, <strong>ללא</strong> דמי משלוח וביטוח.<br>
+      מקור: <a href="https://www.kolzchut.org.il/he/%D7%96%D7%9B%D7%95%D7%AA%D7%95%D7%9F_%D7%91%D7%A0%D7%95%D7%A9%D7%90_%D7%99%D7%91%D7%95%D7%90_%D7%90%D7%99%D7%A9%D7%99_(%D7%97%D7%91%D7%99%D7%9C%D7%95%D7%AA_%D7%9E%D7%97%D7%95%22%D7%9C)" target="_blank" rel="noopener">כל זכות — יבוא אישי</a>
     </p>
 
-    <footer>עודכן לאחרונה: יוני 2026</footer>
+    <footer>
+      עודכן: 1 יוני 2026 · הסף עשוי להשתנות — מומלץ לבדוק ב<a href="https://www.gov.il/he/departments/israel_tax_authority" target="_blank" rel="noopener">רשות המסים</a> לפני רכישה
+    </footer>
   </body>
 </html>
