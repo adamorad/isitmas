@@ -12,15 +12,15 @@
         --green: #16a34a;
         --green-bg: #dcfce7;
         --green-border: #86efac;
-        --amber: #d97706;
-        --amber-bg: #fef3c7;
-        --amber-border: #fcd34d;
         --gray: #6b7280;
         --gray-bg: #f3f4f6;
         --gray-border: #d1d5db;
         --red: #dc2626;
         --red-bg: #fee2e2;
         --red-border: #fca5a5;
+        --blue: #2563eb;
+        --blue-bg: #eff6ff;
+        --blue-border: #bfdbfe;
         --text: #111827;
         --muted: #6b7280;
         --bg: #f9fafb;
@@ -36,229 +36,125 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        padding: 2.5rem 1rem;
+        padding: 2.5rem 1rem 4rem;
       }
 
-      .site-name {
-        font-size: 0.85rem;
-        font-weight: 700;
-        letter-spacing: 0.05em;
-        color: var(--muted);
-        text-transform: lowercase;
-        margin-bottom: 2.5rem;
-      }
+      /* ── site header ── */
+      .site-name { font-size:.85rem; font-weight:700; letter-spacing:.05em; color:var(--muted); text-transform:lowercase; margin-bottom:2.5rem; }
+      .question  { font-size:1.1rem; color:var(--muted); margin-bottom:1rem; text-align:center; }
 
-      .question {
-        font-size: 1.1rem;
-        color: var(--muted);
-        margin-bottom: 1rem;
-        text-align: center;
-      }
+      .big-answer   { font-size:clamp(5rem,20vw,9rem); font-weight:900; line-height:1; color:var(--green); text-align:center; margin-bottom:.5rem; letter-spacing:-.03em; }
+      .answer-label { font-size:1rem; font-weight:600; color:var(--green); text-align:center; margin-bottom:.5rem; }
+      .fresh-badge  { display:inline-flex; align-items:center; gap:.4rem; background:var(--green-bg); border:1px solid var(--green-border); border-radius:8px; padding:.4rem .9rem; font-size:.78rem; color:var(--green); font-weight:600; margin-bottom:2.5rem; }
 
-      .big-answer {
-        font-size: clamp(5rem, 20vw, 9rem);
-        font-weight: 900;
-        line-height: 1;
-        color: var(--green);
-        text-align: center;
-        margin-bottom: 0.5rem;
-        letter-spacing: -0.03em;
-      }
+      /* ── threshold chips ── */
+      .options { display:flex; gap:.75rem; margin-bottom:3rem; flex-wrap:wrap; justify-content:center; }
+      .option   { border-radius:var(--radius); padding:1.1rem 1.5rem; text-align:center; min-width:110px; }
+      .option.active   { background:var(--green-bg); border:2px solid var(--green-border); }
+      .option.cancelled{ background:var(--red-bg);   border:2px solid var(--red-border);   opacity:.5; }
+      .option-amount { font-size:1.9rem; font-weight:800; display:block; letter-spacing:-.02em; }
+      .option.active    .option-amount { color:var(--green); }
+      .option.cancelled .option-amount { color:var(--red); text-decoration:line-through; }
+      .option-status { font-size:.75rem; font-weight:600; margin-top:.25rem; display:block; }
+      .option.active    .option-status { color:var(--green); }
+      .option.cancelled .option-status { color:var(--red); }
+      .option-date { font-size:.68rem; color:var(--muted); margin-top:.15rem; display:block; }
 
-      .answer-label {
-        font-size: 1rem;
-        font-weight: 600;
-        color: var(--green);
-        text-align: center;
-        margin-bottom: 0.5rem;
-      }
+      .divider { width:40px; height:2px; background:var(--gray-border); margin:0 auto 2rem; }
 
-      .fresh-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        background: var(--green-bg);
-        border: 1px solid var(--green-border);
-        border-radius: 8px;
-        padding: 0.4rem 0.9rem;
-        font-size: 0.78rem;
-        color: var(--green);
-        font-weight: 600;
-        margin-bottom: 2.5rem;
-      }
+      /* ── timeline ── */
+      .history-card { background:var(--card); border:1px solid #e5e7eb; border-radius:var(--radius); padding:1.5rem; max-width:480px; width:100%; }
+      .history-title,.brackets-title,.votes-title { font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:1rem; text-align:center; }
+      .timeline { list-style:none; display:flex; flex-direction:column; }
+      .tl-item  { display:grid; grid-template-columns:1fr auto; gap:.5rem 1rem; font-size:.875rem; padding:.6rem 0; border-bottom:1px solid var(--gray-border); align-items:start; }
+      .tl-item:last-child { border-bottom:none; }
+      .tl-date  { color:var(--muted); font-size:.78rem; margin-bottom:.1rem; }
+      .tl-event { color:var(--text); line-height:1.4; }
+      .tl-amount { font-weight:800; font-size:1.1rem; align-self:center; }
+      .tl-amount.baseline { color:var(--green); }
+      .tl-amount.gone     { color:var(--red); text-decoration:line-through; }
+      .tl-amount.current  { color:var(--green); }
 
-      .options {
-        display: flex;
-        gap: 0.75rem;
-        margin-bottom: 3rem;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
+      /* ── brackets ── */
+      .brackets { background:var(--card); border:1px solid #e5e7eb; border-radius:var(--radius); padding:1.25rem 1.5rem; max-width:480px; width:100%; margin-top:1rem; }
+      .bracket-row { display:flex; justify-content:space-between; align-items:center; font-size:.85rem; padding:.35rem 0; border-bottom:1px solid var(--gray-border); gap:1rem; }
+      .bracket-row:last-child { border-bottom:none; }
+      .bracket-range { color:var(--text); font-weight:600; }
+      .bracket-tax { color:var(--muted); }
+      .bracket-tax.free { color:var(--green); font-weight:600; }
 
-      .option {
-        border-radius: var(--radius);
-        padding: 1.1rem 1.5rem;
-        text-align: center;
-        min-width: 110px;
-      }
+      /* ── votes section ── */
+      .votes-section { max-width:680px; width:100%; margin-top:2rem; }
+      .votes-section > .votes-title { margin-bottom:.35rem; }
+      .votes-subtitle { font-size:.82rem; color:var(--muted); text-align:center; margin-bottom:1.25rem; }
 
-      .option.active {
-        background: var(--green-bg);
-        border: 2px solid var(--green-border);
-      }
+      .vote-tabs { display:flex; gap:.5rem; justify-content:center; margin-bottom:1.25rem; flex-wrap:wrap; }
+      .vote-tab  { padding:.45rem 1.1rem; border-radius:99px; font-size:.82rem; font-weight:600; cursor:pointer; border:2px solid var(--gray-border); background:var(--card); color:var(--muted); transition:all .15s; }
+      .vote-tab.active { border-color:var(--blue); background:var(--blue-bg); color:var(--blue); }
 
-      .option.cancelled {
-        background: var(--red-bg);
-        border: 2px solid var(--red-border);
-        opacity: 0.5;
-      }
+      .vote-panel { display:none; }
+      .vote-panel.active { display:block; }
 
-      .option-amount {
-        font-size: 1.9rem;
-        font-weight: 800;
-        display: block;
-        letter-spacing: -0.02em;
-      }
+      .vote-result-bar { display:flex; align-items:center; justify-content:center; gap:.6rem; font-size:.8rem; margin-bottom:1rem; flex-wrap:wrap; }
+      .vr-chip { padding:.3rem .75rem; border-radius:99px; font-weight:700; font-size:.8rem; }
+      .vr-chip.cancel { background:var(--red-bg); color:var(--red); border:1px solid var(--red-border); }
+      .vr-chip.keep   { background:var(--green-bg); color:var(--green); border:1px solid var(--green-border); }
+      .vr-vs { color:var(--muted); font-size:.75rem; }
 
-      .option.active    .option-amount { color: var(--green); }
-      .option.cancelled .option-amount { color: var(--red); text-decoration: line-through; }
+      .vote-cols { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+      @media(max-width:520px) { .vote-cols { grid-template-columns:1fr; } }
 
-      .option-status {
-        font-size: 0.75rem;
-        font-weight: 600;
-        margin-top: 0.25rem;
-        display: block;
-      }
+      .vote-col { background:var(--card); border:1px solid #e5e7eb; border-radius:var(--radius); padding:1rem; }
+      .vote-col-header { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; margin-bottom:.9rem; text-align:center; padding-bottom:.6rem; border-bottom:2px solid; }
+      .vote-col.col-keep   .vote-col-header { color:var(--green); border-color:var(--green-border); }
+      .vote-col.col-cancel .vote-col-header { color:var(--red);   border-color:var(--red-border); }
 
-      .option.active    .option-status { color: var(--green); }
-      .option.cancelled .option-status { color: var(--red); }
+      .vote-subheader { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin:.8rem 0 .4rem; }
+      .vote-subheader:first-child { margin-top:0; }
 
-      .option-date {
-        font-size: 0.68rem;
-        color: var(--muted);
-        margin-top: 0.15rem;
-        display: block;
-      }
+      .party-bloc { display:flex; align-items:center; justify-content:space-between; padding:.3rem 0; border-bottom:1px solid var(--gray-border); font-size:.82rem; }
+      .party-bloc:last-child { border-bottom:none; }
+      .party-name { color:var(--text); font-weight:600; }
+      .party-note { font-size:.72rem; color:var(--muted); }
 
-      .divider {
-        width: 40px;
-        height: 2px;
-        background: var(--gray-border);
-        margin: 0 auto 2rem;
-      }
+      .mk-grid { display:flex; flex-direction:column; gap:.3rem; }
+      .mk-row   { display:flex; align-items:center; gap:.5rem; padding:.3rem 0; border-bottom:1px solid var(--gray-border); }
+      .mk-row:last-child { border-bottom:none; }
+      .mk-name  { font-size:.82rem; color:var(--text); font-weight:600; flex:1; }
+      .party-badge { font-size:.65rem; font-weight:700; padding:.15rem .45rem; border-radius:4px; white-space:nowrap; flex-shrink:0; }
+      .mk-disputed { font-size:.65rem; color:#b45309; background:#fef3c7; border:1px solid #fde68a; border-radius:4px; padding:.1rem .35rem; flex-shrink:0; }
 
-      .history-card {
-        background: var(--card);
-        border: 1px solid #e5e7eb;
-        border-radius: var(--radius);
-        padding: 1.5rem;
-        max-width: 480px;
-        width: 100%;
-      }
+      /* party badge colors */
+      .badge-likud   { background:#dbeafe; color:#1d4ed8; }
+      .badge-rz      { background:#ffedd5; color:#c2410c; }
+      .badge-shas    { background:#ede9fe; color:#6d28d9; }
+      .badge-utj     { background:#f3f4f6; color:#374151; }
+      .badge-otzma   { background:#fee2e2; color:#991b1b; }
+      .badge-yeshatid{ background:#e0f2fe; color:#0369a1; }
+      .badge-unity   { background:#ccfbf1; color:#0f766e; }
+      .badge-labor   { background:#ffe4e6; color:#be123c; }
+      .badge-dem     { background:#dcfce7; color:#15803d; }
+      .badge-arab    { background:#f0fdf4; color:#166534; }
+      .badge-newhope { background:#faf5ff; color:#7e22ce; }
 
-      .history-title {
-        font-size: 0.8rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: var(--muted);
-        margin-bottom: 1rem;
-        text-align: center;
-      }
+      .data-note { font-size:.73rem; color:var(--muted); margin-top:.9rem; text-align:center; line-height:1.5; background:var(--gray-bg); border-radius:8px; padding:.6rem .8rem; }
+      .data-note a { color:var(--muted); }
 
-      .timeline {
-        list-style: none;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .tl-item {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 0.5rem 1rem;
-        font-size: 0.875rem;
-        padding: 0.6rem 0;
-        border-bottom: 1px solid var(--gray-border);
-        align-items: start;
-      }
-
-      .tl-item:last-child { border-bottom: none; }
-
-      .tl-date  { color: var(--muted); font-size: 0.78rem; margin-bottom: 0.1rem; }
-      .tl-event { color: var(--text); line-height: 1.4; }
-      .tl-amount { font-weight: 800; font-size: 1.1rem; align-self: center; }
-      .tl-amount.baseline { color: var(--green); }
-      .tl-amount.gone     { color: var(--red); text-decoration: line-through; }
-      .tl-amount.current  { color: var(--green); }
-
-      .brackets {
-        background: var(--card);
-        border: 1px solid #e5e7eb;
-        border-radius: var(--radius);
-        padding: 1.25rem 1.5rem;
-        max-width: 480px;
-        width: 100%;
-        margin-top: 1rem;
-      }
-
-      .brackets-title {
-        font-size: 0.8rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: var(--muted);
-        margin-bottom: 0.9rem;
-        text-align: center;
-      }
-
-      .bracket-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 0.85rem;
-        padding: 0.35rem 0;
-        border-bottom: 1px solid var(--gray-border);
-        gap: 1rem;
-      }
-
-      .bracket-row:last-child { border-bottom: none; }
-      .bracket-range { color: var(--text); font-weight: 600; }
-      .bracket-tax { color: var(--muted); }
-      .bracket-tax.free { color: var(--green); font-weight: 600; }
-
-      .explainer {
-        max-width: 480px;
-        width: 100%;
-        margin-top: 1rem;
-        font-size: 0.8rem;
-        color: var(--muted);
-        text-align: center;
-        line-height: 1.65;
-      }
-
-      .explainer strong { color: var(--text); }
-      .explainer a { color: var(--muted); }
-
-      footer {
-        margin-top: 2.5rem;
-        font-size: 0.72rem;
-        color: #9ca3af;
-        text-align: center;
-        line-height: 1.7;
-      }
-
-      footer a { color: #9ca3af; }
+      /* ── explainer + footer ── */
+      .explainer { max-width:480px; width:100%; margin-top:1rem; font-size:.8rem; color:var(--muted); text-align:center; line-height:1.65; }
+      .explainer strong { color:var(--text); }
+      .explainer a { color:var(--muted); }
+      footer { margin-top:2.5rem; font-size:.72rem; color:#9ca3af; text-align:center; line-height:1.7; }
+      footer a { color:#9ca3af; }
     </style>
   </head>
   <body>
+
     <p class="site-name">isitmas ✦ מע״מ על קניות מחו״ל</p>
 
     <p class="question">מה הסף הנוכחי לפטור ממע״מ?</p>
-
     <div class="big-answer">$75</div>
     <p class="answer-label">הסף הנוכחי — הכנסת ביטלה את ה-$130 ב-2.6.2026</p>
-
     <div class="fresh-badge">✓ עודכן היום, 2 ביוני 2026</div>
 
     <div class="options">
@@ -285,38 +181,23 @@
       <p class="history-title">ציר זמן</p>
       <ul class="timeline">
         <li class="tl-item">
-          <div>
-            <div class="tl-date">שנים רבות עד 23.12.2025</div>
-            <div class="tl-event">סף ותיק</div>
-          </div>
+          <div><div class="tl-date">שנים רבות עד 23.12.2025</div><div class="tl-event">סף ותיק</div></div>
           <span class="tl-amount baseline">$75</span>
         </li>
         <li class="tl-item">
-          <div>
-            <div class="tl-date">24.12.2025</div>
-            <div class="tl-event">סמוטריץ׳ הכפיל את הפטור בצו</div>
-          </div>
+          <div><div class="tl-date">24.12.2025</div><div class="tl-event">סמוטריץ׳ הכפיל את הפטור בצו</div></div>
           <span class="tl-amount gone">$150</span>
         </li>
         <li class="tl-item">
-          <div>
-            <div class="tl-date">24.2.2026</div>
-            <div class="tl-event">הכנסת ביטלה (59–25) — תקדים היסטורי</div>
-          </div>
+          <div><div class="tl-date">24.2.2026</div><div class="tl-event">הכנסת ביטלה (59–25) — תקדים היסטורי</div></div>
           <span class="tl-amount gone">$150 ✕</span>
         </li>
         <li class="tl-item">
-          <div>
-            <div class="tl-date">25.2.2026</div>
-            <div class="tl-event">סמוטריץ׳ חתם על צו חדש ב-$130 תוך 16 שעות — במכוון בסכום שונה</div>
-          </div>
+          <div><div class="tl-date">25.2.2026</div><div class="tl-event">סמוטריץ׳ חתם צו חדש ב-$130 תוך 16 שעות — במכוון בסכום שונה</div></div>
           <span class="tl-amount gone">$130</span>
         </li>
         <li class="tl-item">
-          <div>
-            <div class="tl-date">2.6.2026</div>
-            <div class="tl-event">הכנסת ביטלה גם את ה-$130 (59–23) — חזרה לבסיס</div>
-          </div>
+          <div><div class="tl-date">2.6.2026</div><div class="tl-event">הכנסת ביטלה גם את ה-$130 (59–23)</div></div>
           <span class="tl-amount current">$75 ↩</span>
         </li>
       </ul>
@@ -338,14 +219,164 @@
       </div>
     </div>
 
-    <p class="explainer">
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- VOTING SECTION                                         -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <div class="votes-section">
+      <p class="votes-title">הצבעות בכנסת</p>
+      <p class="votes-subtitle">מי תמך בפטור גבוה יותר — לקראת הבחירות</p>
+
+      <div class="vote-tabs">
+        <button class="vote-tab active" onclick="switchVote('jun')">יוני 2026 — צו $130</button>
+        <button class="vote-tab"        onclick="switchVote('feb')">פברואר 2026 — צו $150</button>
+      </div>
+
+      <!-- ── JUNE 2026 VOTE ── -->
+      <div class="vote-panel active" id="panel-jun">
+        <div class="vote-result-bar">
+          <span class="vr-chip cancel">59 — הצביעו לביטול</span>
+          <span class="vr-vs">מול</span>
+          <span class="vr-chip keep">23 — הצביעו לשמור $130</span>
+        </div>
+        <div class="vote-cols">
+
+          <!-- LEFT: voted to KEEP the $130 order (pro-higher threshold) -->
+          <div class="vote-col col-keep">
+            <div class="vote-col-header">בעד הפטור הגבוה ($130)<br><small style="font-weight:400;text-transform:none;letter-spacing:0">הצביעו נגד ביטול · 23 ח"כ</small></div>
+
+            <p class="vote-subheader">כגוש — כל חברי המפלגה</p>
+            <div class="party-bloc"><span class="party-name">ציונות דתית</span><span class="party-note">~7 ח"כ</span></div>
+            <div class="party-bloc"><span class="party-name">ש"ס</span><span class="party-note">~11 ח"כ</span></div>
+
+            <p class="vote-subheader">ח"כים בודדים</p>
+            <div class="mk-grid">
+              <div class="mk-row">
+                <span class="mk-name">יצחק פינדרוס</span>
+                <span class="party-badge badge-utj">יהדות התורה</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: voted to CANCEL the $130 order (pro-lower threshold) -->
+          <div class="vote-col col-cancel">
+            <div class="vote-col-header">נגד הפטור הגבוה<br><small style="font-weight:400;text-transform:none;letter-spacing:0">הצביעו לביטול · 59 ח"כ</small></div>
+
+            <p class="vote-subheader">כגוש — כל חברי המפלגה</p>
+            <div class="party-bloc"><span class="party-name">יש עתיד</span><span class="party-note">24 ח"כ</span></div>
+            <div class="party-bloc"><span class="party-name">מחנה המדינה</span><span class="party-note">12 ח"כ</span></div>
+            <div class="party-bloc"><span class="party-name">העבודה</span><span class="party-note">7 ח"כ</span></div>
+            <div class="party-bloc"><span class="party-name">הדמוקרטים</span><span class="party-note">9 ח"כ</span></div>
+            <div class="party-bloc"><span class="party-name">ר"ע + חד"ש-תע"ל</span><span class="party-note">10 ח"כ</span></div>
+
+            <p class="vote-subheader">מורדי קואליציה — ליכוד</p>
+            <div class="mk-grid">
+              <div class="mk-row"><span class="mk-name">חנוך מיליבצקי</span><span class="party-badge badge-likud">ליכוד</span></div>
+              <div class="mk-row"><span class="mk-name">יולי אדלשטיין</span><span class="party-badge badge-likud">ליכוד</span></div>
+              <div class="mk-row"><span class="mk-name">אלי דלל</span><span class="party-badge badge-likud">ליכוד</span></div>
+              <div class="mk-row"><span class="mk-name">דוד ביטן</span><span class="party-badge badge-likud">ליכוד</span></div>
+              <div class="mk-row"><span class="mk-name">ששון גואטה</span><span class="party-badge badge-likud">ליכוד</span></div>
+              <div class="mk-row"><span class="mk-name">שלום דנינו</span><span class="party-badge badge-likud">ליכוד</span></div>
+              <div class="mk-row"><span class="mk-name">עקרם חסון</span><span class="party-badge badge-likud">ליכוד</span></div>
+              <div class="mk-row"><span class="mk-name">אושר שקלים</span><span class="party-badge badge-likud">ליכוד</span></div>
+            </div>
+
+            <p class="vote-subheader">מורדי קואליציה — אחרים</p>
+            <div class="mk-grid">
+              <div class="mk-row"><span class="mk-name">אמיחי אליהו</span><span class="party-badge badge-otzma">עוצמה יהודית</span></div>
+              <div class="mk-row"><span class="mk-name">לימור סון הר-מלך</span><span class="party-badge badge-otzma">עוצמה יהודית</span></div>
+              <div class="mk-row"><span class="mk-name">משה גפני</span><span class="party-badge badge-utj">יהדות התורה</span></div>
+              <div class="mk-row"><span class="mk-name">יעקב גולדקנוף</span><span class="party-badge badge-utj">יהדות התורה</span></div>
+            </div>
+          </div>
+        </div>
+        <p class="data-note">שמות לפי דיווחי עיתונות (TheMarker, גלובס, ידיעות). רשימת ההצבעה הרשמית של הכנסת אינה נגישה לציבור. אופוזיציה הצביעה כגוש — שמות בודדים אינם מדווחים.</p>
+      </div>
+
+      <!-- ── FEBRUARY 2026 VOTE ── -->
+      <div class="vote-panel" id="panel-feb">
+        <div class="vote-result-bar">
+          <span class="vr-chip cancel">59 — הצביעו לביטול</span>
+          <span class="vr-vs">מול</span>
+          <span class="vr-chip keep">25 — הצביעו לשמור $150</span>
+        </div>
+        <div class="vote-cols">
+
+          <!-- LEFT: voted to KEEP the $150 order -->
+          <div class="vote-col col-keep">
+            <div class="vote-col-header">בעד הפטור הגבוה ($150)<br><small style="font-weight:400;text-transform:none;letter-spacing:0">הצביעו נגד ביטול · 25 ח"כ</small></div>
+
+            <p class="vote-subheader">כגוש — כל חברי המפלגה</p>
+            <div class="party-bloc"><span class="party-name">ציונות דתית</span><span class="party-note">~7 ח"כ</span></div>
+            <div class="party-bloc"><span class="party-name">ש"ס</span><span class="party-note">~11 ח"כ</span></div>
+
+            <p class="vote-subheader">ח"כים בודדים</p>
+            <div class="mk-grid">
+              <div class="mk-row">
+                <span class="mk-name">יצחק פינדרוס</span>
+                <span class="party-badge badge-utj">יהדות התורה</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: voted to CANCEL the $150 order -->
+          <div class="vote-col col-cancel">
+            <div class="vote-col-header">נגד הפטור הגבוה<br><small style="font-weight:400;text-transform:none;letter-spacing:0">הצביעו לביטול · 59 ח"כ</small></div>
+
+            <p class="vote-subheader">כגוש — כל חברי המפלגה</p>
+            <div class="party-bloc"><span class="party-name">יש עתיד</span><span class="party-note">24 ח"כ</span></div>
+            <div class="party-bloc"><span class="party-name">מחנה המדינה</span><span class="party-note">12 ח"כ</span></div>
+            <div class="party-bloc"><span class="party-name">העבודה</span><span class="party-note">7 ח"כ</span></div>
+            <div class="party-bloc"><span class="party-name">הדמוקרטים</span><span class="party-note">9 ח"כ</span></div>
+            <div class="party-bloc"><span class="party-name">ר"ע + חד"ש-תע"ל</span><span class="party-note">10 ח"כ</span></div>
+
+            <p class="vote-subheader">מורדי קואליציה — ליכוד</p>
+            <div class="mk-grid">
+              <div class="mk-row"><span class="mk-name">חנוך מיליבצקי</span><span class="party-badge badge-likud">ליכוד</span></div>
+              <div class="mk-row"><span class="mk-name">יולי אדלשטיין</span><span class="party-badge badge-likud">ליכוד</span></div>
+              <div class="mk-row"><span class="mk-name">אלי דלל</span><span class="party-badge badge-likud">ליכוד</span></div>
+              <div class="mk-row"><span class="mk-name">דוד ביטן</span><span class="party-badge badge-likud">ליכוד</span></div>
+              <div class="mk-row"><span class="mk-name">ששון גואטה</span><span class="party-badge badge-likud">ליכוד</span></div>
+              <div class="mk-row"><span class="mk-name">שלום דנינו</span><span class="party-badge badge-likud">ליכוד</span></div>
+              <div class="mk-row"><span class="mk-name">אושר שקלים</span><span class="party-badge badge-likud">ליכוד</span></div>
+              <div class="mk-row"><span class="mk-name">ניר ברקת</span><span class="party-badge badge-likud">ליכוד</span></div>
+              <div class="mk-row">
+                <span class="mk-name">טלי גוטליב</span>
+                <span class="party-badge badge-likud">ליכוד</span>
+                <span class="mk-disputed">שנוי במחלוקת</span>
+              </div>
+            </div>
+
+            <p class="vote-subheader">מורדי קואליציה — אחרים</p>
+            <div class="mk-grid">
+              <div class="mk-row"><span class="mk-name">אמיחי אליהו</span><span class="party-badge badge-otzma">עוצמה יהודית</span></div>
+              <div class="mk-row"><span class="mk-name">לימור סון הר-מלך</span><span class="party-badge badge-otzma">עוצמה יהודית</span></div>
+              <div class="mk-row"><span class="mk-name">עקרם חסון</span><span class="party-badge badge-newhope">תקווה חדשה</span></div>
+              <div class="mk-row"><span class="mk-name">מיכאל ביטון</span><span class="party-badge badge-newhope">תקווה חדשה</span></div>
+            </div>
+          </div>
+        </div>
+        <p class="data-note">שמות לפי דיווחי TheMarker וערוץ 14. טלי גוטליב: TheMarker דיווח שהצביעה נגד; ynet דיווח שלא השתתפה. ניר ברקט: דיווח ב-Yeshiva World, לא אומת ע"י מקור ראשי. רשימת ההצבעה הרשמית אינה נגישה.</p>
+      </div>
+    </div>
+    <!-- ══════════════════════════════════════════════════════ -->
+
+    <p class="explainer" style="margin-top:2rem">
       הסכום מחושב על ערך הסחורה בלבד, <strong>ללא</strong> דמי משלוח וביטוח.<br>
-      מקור: <a href="https://www.kolzchut.org.il/he/%D7%96%D7%9B%D7%95%D7%AA%D7%95%D7%9F_%D7%91%D7%A0%D7%95%D7%A9%D7%90_%D7%99%D7%91%D7%95%D7%90_%D7%90%D7%99%D7%A9%D7%99_(%D7%97%D7%91%D7%99%D7%9C%D7%95%D7%AA_%D7%9E%D7%97%D7%95%22%D7%9C)" target="_blank" rel="noopener">כל זכות — יבוא אישי</a>
+      מקור: <a href="https://www.kolzchut.org.il/he/%D7%96%D7%9B%D7%95%D7%AA%D7%95%D7%9F_%D7%91%D7%A0%D7%95%D7%A9%D7%90_%D7%99%D7%91%D7%95%D7%90_%D7%90%D7%99%D7%A9%D7%99_(%D7%97%D7%91%D7%99%D7%9C%D7%95%D7%AA_%D7%9E%D7%97%D7%95%22%D7%9C)" target="_blank" rel="noopener">כל זכות</a>
       · <a href="https://www.timesofisrael.com/knesset-revokes-smotrichs-order-expanding-personal-import-tax-exemption-to-130/" target="_blank" rel="noopener">Times of Israel</a>
     </p>
 
     <footer>
-      עודכן: 2 יוני 2026 · הסף עשוי להשתנות שוב — מומלץ לבדוק ב<a href="https://www.gov.il/he/departments/israel_tax_authority" target="_blank" rel="noopener">רשות המסים</a> לפני רכישה
+      עודכן: 2 יוני 2026 · הסף עשוי להשתנות שוב — מומלץ לבדוק ב<a href="https://www.gov.il/he/departments/israel_tax_authority" target="_blank" rel="noopener">רשות המסים</a>
     </footer>
+
+    <script>
+      function switchVote(which) {
+        document.querySelectorAll('.vote-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.vote-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('panel-' + which).classList.add('active');
+        event.target.classList.add('active');
+      }
+    </script>
   </body>
 </html>
